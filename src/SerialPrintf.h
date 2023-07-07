@@ -72,7 +72,7 @@ private:
 #if defined( COMPAT_SOFTWARE_SERIAL )
     SoftwareSerial * pxSWSerial;
 #endif
-    bool bSerialSetLock;
+    bool bInitLock;
     void * (*pvMalloc)( size_t xSize );
     void (*vFree)( void * pvPtr );
     int8_t cSetBuffer( int16_t sBufferSize );

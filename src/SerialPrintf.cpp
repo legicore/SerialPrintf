@@ -43,7 +43,7 @@ SerialPrintf::SerialPrintf()
     pxSWSerial = NULL;
 #endif
 
-    bSerialSetLock = false;
+    bInitLock = false;
 
     pvMalloc = malloc;
     vFree = free;
@@ -52,20 +52,18 @@ SerialPrintf::SerialPrintf()
 
 int SerialPrintf::begin( Serial_t * serial, int bufferSize )
 {
-    if( ( serial == NULL ) || ( bufferSize == 0 ) || ( bSerialSetLock == true ) )
+    if( ( serial != NULL ) && ( bufferSize > 0 ) && ( bInitLock == false ) )
     {
-        return -1;
+        if( cSetBuffer( bufferSize ) == 0 )
+        {
+            pxSerial = serial;
+            bInitLock = true;
+
+            return 0;
+        }
     }
-
-    if( cSetBuffer( bufferSize ) != 0 )
-    {
-        return -1;
-    }
-
-    pxSerial = serial;
-    bSerialSetLock = true;
-
-    return 0;
+    
+    return -1;
 }
 /*-----------------------------------------------------------*/
 
@@ -73,20 +71,18 @@ int SerialPrintf::begin( Serial_t * serial, int bufferSize )
 
     int SerialPrintf::begin( HWSerial_t * serial, int bufferSize )
     {
-        if( ( serial == NULL ) || ( bufferSize == 0 ) || ( bSerialSetLock == true ) )
+        if( ( serial != NULL ) && ( bufferSize > 0 ) && ( bInitLock == false ) )
         {
-            return -1;
+            if( cSetBuffer( bufferSize ) == 0 )
+            {
+                pxHWSerial = serial;
+                bInitLock = true;
+
+                return 0;
+            }
         }
-
-        if( cSetBuffer( bufferSize ) != 0 )
-        {
-            return -1;
-        }
-
-        pxHWSerial = serial;
-        bSerialSetLock = true;
-
-        return 0;
+        
+        return -1;
     }
 
 #endif
@@ -96,20 +92,18 @@ int SerialPrintf::begin( Serial_t * serial, int bufferSize )
 
     int SerialPrintf::begin( SoftwareSerial * serial, int bufferSize )
     {
-        if( ( serial == NULL ) || ( bufferSize == 0 ) || ( bSerialSetLock == true ) )
+        if( ( serial != NULL ) && ( bufferSize > 0 ) && ( bInitLock == false ) )
         {
-            return -1;
+            if( cSetBuffer( bufferSize ) == 0 )
+            {
+                pxSWSerial = serial;
+                bInitLock = true;
+
+                return 0;
+            }
         }
-
-        if( cSetBuffer( bufferSize ) != 0 )
-        {
-            return -1;
-        }
-
-        pxSWSerial = serial;
-        bSerialSetLock = true;
-
-        return 0;
+        
+        return -1;
     }
 
 #endif
@@ -129,26 +123,24 @@ void SerialPrintf::end( void )
     pcBuffer = NULL;
     xBufferSize = 0;
 
-    bSerialSetLock = false;
+    bInitLock = false;
 }
 /*-----------------------------------------------------------*/
 
 int8_t SerialPrintf::cSetBuffer( int16_t sBufferSize )
 {
-    if( sBufferSize == 0 )
+    if( sBufferSize > 0 )
     {
-        return -1;
+        pcBuffer = ( char * ) pvMalloc( sizeof( char ) * ( size_t ) sBufferSize );
+        if( pcBuffer != NULL )
+        {
+            xBufferSize = ( size_t ) sBufferSize;
+
+            return 0;
+        }
     }
 
-    pcBuffer = ( char * ) pvMalloc( sizeof( char ) * ( size_t ) sBufferSize );
-    if( pcBuffer == NULL )
-    {
-        return -1;
-    }
-
-    xBufferSize = ( size_t ) sBufferSize;
-
-    return 0;
+    return -1;
 }
 /*-----------------------------------------------------------*/
 

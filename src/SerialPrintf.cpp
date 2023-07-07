@@ -50,6 +50,12 @@ SerialPrintf::SerialPrintf()
 }
 /*-----------------------------------------------------------*/
 
+SerialPrintf::~SerialPrintf()
+{
+    vFree( pcBuffer );
+}
+/*-----------------------------------------------------------*/
+
 int SerialPrintf::begin( Serial_t * serial, int bufferSize )
 {
     if( ( serial != NULL ) && ( bufferSize > 0 ) && ( bInitLock == false ) )

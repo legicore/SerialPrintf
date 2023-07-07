@@ -50,6 +50,7 @@ class SerialPrintf
 public:
 
     SerialPrintf();
+    ~SerialPrintf();
     int begin( Serial_t * serial, int bufferSize = configBUF_SIZE_DEFAULT );
 #if defined( HWSerial_t )
     int begin( HWSerial_t * serial, int bufferSize = configBUF_SIZE_DEFAULT );

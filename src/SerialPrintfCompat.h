@@ -23,18 +23,14 @@
 
 /*-----------------------------------------------------------*/
 
-/* This value for the Arduino default serial configuration is taken from the
-source code (8 data bits, no parity, 1 stop bit). */
-#define SERIAL_CONFIG_DEFAULT   SERIAL_8N1
-
-/* Check the architecture, based on the architecture of the tested boards. */
+/* Check if the architecture of the currently selected borad is supported. */
 #if defined( ARDUINO_ARCH_AVR ) || \
     defined( ARDUINO_ARCH_MEGAAVR ) || \
     defined( ARDUINO_ARCH_SAMD ) || \
     defined( ARDUINO_ARCH_RENESAS )
 
     /* Check for the known boards that are not (!) compatible with the Arduino
-    SoftwareSerial library, and if none of them is selected, the compatibility
+    SoftwareSerial library - and if none of them is selected, the compatibility
     gets activated. */
     #if !defined( ARDUINO_SAMD_MKRZERO ) && \
         !defined( ARDUINO_SAMD_NANO_33_IOT )
@@ -43,12 +39,11 @@ source code (8 data bits, no parity, 1 stop bit). */
 
     #endif
 
-    /* Check for the known/tested boards and set the Serial_t type to the
-    associated Arduino serial type. */
+    /* Check the type of the currently selected board and set the needed
+    parameters if it is supported. */
     #if defined( ARDUINO_AVR_UNO ) || \
         defined( ARDUINO_AVR_MEGA2560 ) || \
-        defined( ARDUINO_AVR_PRO ) || \
-        defined( ARDUINO_SAMD_MKRZERO )
+        defined( ARDUINO_AVR_PRO )
 
         #define Serial_t    HardwareSerial
 
@@ -62,7 +57,8 @@ source code (8 data bits, no parity, 1 stop bit). */
 
         #define Serial_t    UartClass
 
-    #elif defined( ARDUINO_SAMD_NANO_33_IOT )
+    #elif defined( ARDUINO_SAMD_MKRZERO ) || \
+          defined( ARDUINO_SAMD_NANO_33_IOT )
 
         #define Serial_t    Serial_
         #define HWSerial_t  Uart
@@ -70,39 +66,31 @@ source code (8 data bits, no parity, 1 stop bit). */
     #elif defined( ARDUINO_MINIMA ) || \
           defined( ARDUINO_UNOWIFIR4 )
 
-        #define Serial_t                _SerialUSB
-        #define HWSerial_t              UART
-        #define SERIAL_PORT_MONITOR     Serial
-        #define SERIAL_PORT_HARDWARE    Serial1
+        #define Serial_t    _SerialUSB
+        #define HWSerial_t  UART
 
     #else
 
-        /* The selected board has a known architecture, but has not yet been
-        tested. So the assumed default values for the Arduino serial port will
-        be set, and the SoftwareSerial compatibility gets deactivated. */
+        #warning The selected board has not been tested with this version of SerialPrintf.
 
+        /* For unknown boards we deactivate the SoftwareSerial compatibility. */
         #if defined( COMPAT_SOFTWARE_SERIAL )
             #undef COMPAT_SOFTWARE_SERIAL
         #endif
-
-        #warning The selected board has not been tested with this version of the library.
 
     #endif
 
 #else
 
-    /* The selected board and its architecture have not yet been tested. So the
-    assumed default values for the Arduino serial port will be set. */
-
-    #warning The selected board and architecture have not been tested with this version of the library.
+    #warning The selected board and architecture have not been tested with this version of SerialPrintf.
 
 #endif
+
+/* If none of the needed defines is set, we try to use some assumed default
+values for the Arduino serial port. */
 
 #if !defined( Serial_t )
-    #define Serial_t                HardwareSerial
-#endif
-#if !defined( SERIAL_PORT_MONITOR )
-    #define SERIAL_PORT_MONITOR     Serial
+    #define Serial_t    HardwareSerial
 #endif
 
 /*-----------------------------------------------------------*/

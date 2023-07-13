@@ -51,7 +51,7 @@ public:
 
     SerialPrintf();
     ~SerialPrintf();
-    int begin( Serial_t * serial, int bufferSize = configBUF_SIZE_DEFAULT );
+    int begin( MONSerial_t * serial, int bufferSize = configBUF_SIZE_DEFAULT );
 #if defined( HWSerial_t )
     int begin( HWSerial_t * serial, int bufferSize = configBUF_SIZE_DEFAULT );
 #endif
@@ -66,7 +66,7 @@ private:
 
     char * pcBuffer;
     size_t xBufferSize;
-    Serial_t * pxSerial;
+    MONSerial_t * pxMONSerial;
 #if defined( HWSerial_t )
     HWSerial_t * pxHWSerial;
 #endif

@@ -35,7 +35,7 @@ SerialPrintf::SerialPrintf()
     pcBuffer = NULL;
     xBufferSize = 0;
 
-    pxSerial = NULL;
+    pxMONSerial = NULL;
 #if defined( HWSerial_t )
     pxHWSerial = NULL;
 #endif
@@ -56,13 +56,13 @@ SerialPrintf::~SerialPrintf()
 }
 /*-----------------------------------------------------------*/
 
-int SerialPrintf::begin( Serial_t * serial, int bufferSize )
+int SerialPrintf::begin( MONSerial_t * serial, int bufferSize )
 {
     if( ( serial != NULL ) && ( bufferSize > 0 ) && ( bInitLock == false ) )
     {
         if( cSetBuffer( bufferSize ) == 0 )
         {
-            pxSerial = serial;
+            pxMONSerial = serial;
             bInitLock = true;
 
             return 0;
@@ -117,7 +117,7 @@ int SerialPrintf::begin( Serial_t * serial, int bufferSize )
 
 void SerialPrintf::end( void )
 {
-    pxSerial = NULL;
+    pxMONSerial = NULL;
 #if defined( HWSerial_t )
     pxHWSerial = NULL;
 #endif
@@ -162,10 +162,10 @@ int SerialPrintf::printf( const char * fmt, ... )
         sStringLen = vsnprintf( pcBuffer, xBufferSize, fmt, xArgs );
         if( ( sStringLen > 0 ) && ( sStringLen < ( int ) xBufferSize ) )
         {
-            if( pxSerial != NULL )
+            if( pxMONSerial != NULL )
             {
-                pxSerial->print( pcBuffer );
-                pxSerial->flush();
+                pxMONSerial->print( pcBuffer );
+                pxMONSerial->flush();
             }
 #if defined( HWSerial_t )
             else if( pxHWSerial != NULL )

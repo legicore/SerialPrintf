@@ -51,9 +51,9 @@ public:
 
     SerialPrintf();
     ~SerialPrintf();
-    int begin( MONSerial_t * serial, int bufferSize = configBUF_SIZE_DEFAULT );
-#if defined( HWSerial_t )
-    int begin( HWSerial_t * serial, int bufferSize = configBUF_SIZE_DEFAULT );
+    int begin( MSerial_t * serial, int bufferSize = configBUF_SIZE_DEFAULT );
+#if defined( HSerial_t )
+    int begin( HSerial_t * serial, int bufferSize = configBUF_SIZE_DEFAULT );
 #endif
 #if defined( COMPAT_SOFTWARE_SERIAL )
     int begin( SoftwareSerial * serial, int bufferSize = configBUF_SIZE_DEFAULT );
@@ -66,12 +66,12 @@ private:
 
     char * pcBuffer;
     size_t xBufferSize;
-    MONSerial_t * pxMONSerial;
-#if defined( HWSerial_t )
-    HWSerial_t * pxHWSerial;
+    MSerial_t * pxMSerial;
+#if defined( HSerial_t )
+    HSerial_t * pxHSerial;
 #endif
 #if defined( COMPAT_SOFTWARE_SERIAL )
-    SoftwareSerial * pxSWSerial;
+    SoftwareSerial * pxSSerial;
 #endif
     bool bInitLock;
     void * (*pvMalloc)( size_t xSize );

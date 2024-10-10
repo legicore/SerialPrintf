@@ -6,7 +6,7 @@
  *
  * @brief       TODO
  * 
- * @copyright   2023 Martin Legleiter
+ * @copyright   2024 Martin Legleiter
  * 
  * @license     Use of this source code is governed by an MIT-style
  *              license that can be found in the LICENSE file or at
@@ -198,7 +198,7 @@ void SerialPrintf::setMemMang( void * (*pvMalloc)( size_t ), void (*vFree)( void
 {
     if( ( pvMalloc != NULL ) && ( vFree != NULL ) )
     {
-        pvMalloc = pvMalloc;
-        vFree = vFree;
+        this->pvMalloc = pvMalloc;
+        this->vFree = vFree;
     }
 }

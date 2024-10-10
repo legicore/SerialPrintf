@@ -6,7 +6,7 @@
  * 
  * @brief       TODO
  * 
- * @copyright   (c) 2023 Martin Legleiter
+ * @copyright   (c) 2024 Martin Legleiter
  * 
  * @license     Use of this source code is governed by an MIT-style
  *              license that can be found in the LICENSE file or at
@@ -27,13 +27,15 @@
 #if defined( ARDUINO_ARCH_AVR ) || \
     defined( ARDUINO_ARCH_MEGAAVR ) || \
     defined( ARDUINO_ARCH_SAMD ) || \
-    defined( ARDUINO_ARCH_RENESAS )
+    defined( ARDUINO_ARCH_RENESAS ) || \
+    defined( ARDUINO_ARCH_ESP32 )
 
     /* Check for the known boards that are not (!) compatible with the Arduino
     SoftwareSerial library - and if none of them is selected, the compatibility
     gets activated. */
     #if !defined( ARDUINO_SAMD_MKRZERO ) && \
-        !defined( ARDUINO_SAMD_NANO_33_IOT )
+        !defined( ARDUINO_SAMD_NANO_33_IOT ) && \
+        !defined( ARDUINO_ARCH_ESP32 )
 
         #define COMPAT_SOFTWARE_SERIAL
 
@@ -45,29 +47,34 @@
         defined( ARDUINO_AVR_MEGA2560 ) || \
         defined( ARDUINO_AVR_PRO )
 
-        #define MONSerial_t    HardwareSerial
+        #define MONSerial_t     HardwareSerial
 
     #elif defined( ARDUINO_AVR_LEONARDO )
 
-        #define MONSerial_t    Serial_
-        #define HWSerial_t  HardwareSerial
+        #define MONSerial_t     Serial_
+        #define HWSerial_t      HardwareSerial
 
     #elif defined( ARDUINO_AVR_NANO_EVERY ) || \
           defined( ARDUINO_AVR_UNO_WIFI_REV2 )
 
-        #define MONSerial_t    UartClass
+        #define MONSerial_t     UartClass
 
     #elif defined( ARDUINO_SAMD_MKRZERO ) || \
           defined( ARDUINO_SAMD_NANO_33_IOT )
 
-        #define MONSerial_t    Serial_
-        #define HWSerial_t  Uart
+        #define MONSerial_t     Serial_
+        #define HWSerial_t      Uart
 
     #elif defined( ARDUINO_MINIMA ) || \
           defined( ARDUINO_UNOWIFIR4 )
 
-        #define MONSerial_t    _SerialUSB
-        #define HWSerial_t  UART
+        #define MONSerial_t     _SerialUSB
+        #define HWSerial_t      UART
+
+    #elif defined( ARDUINO_ARCH_ESP32 )
+
+        #define MONSerial_t     USBCDC
+        #define HWSerial_t      HardwareSerial
 
     #else
 
@@ -90,7 +97,7 @@
 values for the Arduino serial port. */
 
 #if !defined( MONSerial_t )
-    #define MONSerial_t    HardwareSerial
+    #define MONSerial_t     HardwareSerial
 #endif
 
 /*-----------------------------------------------------------*/

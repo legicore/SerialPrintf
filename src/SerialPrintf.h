@@ -26,7 +26,7 @@
 #include "SerialPrintfCompat.h"
 
 #include <Arduino.h>
-#if defined( COMPAT_SOFTWARE_SERIAL )
+#if defined( SSerial_t )
     #include <SoftwareSerial.h>
 #endif
 
@@ -55,8 +55,8 @@ public:
 #if defined( HSerial_t )
     int begin( HSerial_t * serial, int bufferSize = configBUF_SIZE_DEFAULT );
 #endif
-#if defined( COMPAT_SOFTWARE_SERIAL )
-    int begin( SoftwareSerial * serial, int bufferSize = configBUF_SIZE_DEFAULT );
+#if defined( SSerial_t )
+    int begin( SSerial_t * serial, int bufferSize = configBUF_SIZE_DEFAULT );
 #endif
     void end( void );
     int printf( const char * fmt, ... );
@@ -70,8 +70,8 @@ private:
 #if defined( HSerial_t )
     HSerial_t * pxHSerial;
 #endif
-#if defined( COMPAT_SOFTWARE_SERIAL )
-    SoftwareSerial * pxSSerial;
+#if defined( SSerial_t )
+    SSerial_t * pxSSerial;
 #endif
     bool bInitLock;
     void * (*pvMalloc)( size_t xSize );

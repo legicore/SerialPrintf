@@ -26,13 +26,13 @@
 #include "SerialPrintfCompat.h"
 
 #include <Arduino.h>
-#if defined( SSerial_t )
+#if defined( configTYPE_SSERIAL )
     #include <SoftwareSerial.h>
 #endif
 
 /*--------------------------------------------------*/
 
-#define configBUF_SIZE_DEFAULT  64
+#define configBUF_SIZE_DEFAULT 64
 
 /*--------------------------------------------------*/
 
@@ -45,6 +45,15 @@
 
 /*--------------------------------------------------*/
 
+typedef configTYPE_MSERIAL MSerial_t;
+#if defined( configTYPE_HSERIAL )
+    typedef configTYPE_HSERIAL HSerial_t;
+#endif
+#if defined( configTYPE_SSERIAL )
+    typedef configTYPE_SSERIAL SSerial_t;
+#endif
+/*--------------------------------------------------*/
+
 class SerialPrintf
 {
 public:
@@ -52,10 +61,10 @@ public:
     SerialPrintf();
     ~SerialPrintf();
     int begin( MSerial_t * serial, int bufferSize = configBUF_SIZE_DEFAULT );
-#if defined( HSerial_t )
+#if defined( configTYPE_HSERIAL )
     int begin( HSerial_t * serial, int bufferSize = configBUF_SIZE_DEFAULT );
 #endif
-#if defined( SSerial_t )
+#if defined( configTYPE_SSERIAL )
     int begin( SSerial_t * serial, int bufferSize = configBUF_SIZE_DEFAULT );
 #endif
     void end( void );
@@ -67,10 +76,10 @@ private:
     char * pcBuffer;
     size_t xBufferSize;
     MSerial_t * pxMSerial;
-#if defined( HSerial_t )
+#if defined( configTYPE_HSERIAL )
     HSerial_t * pxHSerial;
 #endif
-#if defined( SSerial_t )
+#if defined( configTYPE_SSERIAL )
     SSerial_t * pxSSerial;
 #endif
     bool bInitLock;

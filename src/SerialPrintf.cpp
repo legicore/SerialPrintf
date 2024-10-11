@@ -24,7 +24,7 @@
 #include "SerialPrintf.h"
 
 #include <Arduino.h>
-#if defined( SSerial_t )
+#if defined( configTYPE_SSERIAL )
     #include <SoftwareSerial.h>
 #endif
 
@@ -36,10 +36,10 @@ SerialPrintf::SerialPrintf()
     xBufferSize = 0;
 
     pxMSerial = NULL;
-#if defined( HSerial_t )
+#if defined( configTYPE_HSERIAL )
     pxHSerial = NULL;
 #endif
-#if defined( SSerial_t )
+#if defined( configTYPE_SSERIAL )
     pxSSerial = NULL;
 #endif
 
@@ -73,7 +73,7 @@ int SerialPrintf::begin( MSerial_t * serial, int bufferSize )
 }
 /*-----------------------------------------------------------*/
 
-#if defined( HSerial_t )
+#if defined( configTYPE_HSERIAL )
 
     int SerialPrintf::begin( HSerial_t * serial, int bufferSize )
     {
@@ -94,7 +94,7 @@ int SerialPrintf::begin( MSerial_t * serial, int bufferSize )
 #endif
 /*-----------------------------------------------------------*/
 
-#if defined( SSerial_t )
+#if defined( configTYPE_SSERIAL )
 
     int SerialPrintf::begin( SSerial_t * serial, int bufferSize )
     {
@@ -118,10 +118,10 @@ int SerialPrintf::begin( MSerial_t * serial, int bufferSize )
 void SerialPrintf::end( void )
 {
     pxMSerial = NULL;
-#if defined( HSerial_t )
+#if defined( configTYPE_HSERIAL )
     pxHSerial = NULL;
 #endif
-#if defined( SSerial_t )
+#if defined( configTYPE_SSERIAL )
     pxSSerial = NULL;
 #endif
 
@@ -167,14 +167,14 @@ int SerialPrintf::printf( const char * fmt, ... )
                 pxMSerial->print( pcBuffer );
                 pxMSerial->flush();
             }
-#if defined( HSerial_t )
+#if defined( configTYPE_HSERIAL )
             else if( pxHSerial != NULL )
             {
                 pxHSerial->print( pcBuffer );
                 pxHSerial->flush();
             }
 #endif
-#if defined( SSerial_t )
+#if defined( configTYPE_SSERIAL )
             else if( pxSSerial != NULL )
             {
                 pxSSerial->print( pcBuffer );

@@ -26,7 +26,7 @@
 #include "SerialPrintfCompat.h"
 
 #include <Arduino.h>
-#if defined( configTYPE_SSERIAL )
+#if defined( configSPF_TYPE_SERIAL_SW )
     #include <SoftwareSerial.h>
 #endif
 
@@ -45,12 +45,12 @@
 
 /*--------------------------------------------------*/
 
-typedef configTYPE_MSERIAL MSerial_t;
-#if defined( configTYPE_HSERIAL )
-    typedef configTYPE_HSERIAL HSerial_t;
+typedef configSPF_TYPE_SERIAL SPF_Serial_t;
+#if defined( configSPF_TYPE_SERIAL_HW )
+    typedef configSPF_TYPE_SERIAL_HW SPF_HWSerial_t;
 #endif
-#if defined( configTYPE_SSERIAL )
-    typedef configTYPE_SSERIAL SSerial_t;
+#if defined( configSPF_TYPE_SERIAL_SW )
+    typedef configSPF_TYPE_SERIAL_SW SPF_SWSerial_t;
 #endif
 /*--------------------------------------------------*/
 
@@ -60,12 +60,12 @@ public:
 
     SerialPrintf();
     ~SerialPrintf();
-    int begin( MSerial_t * serial, int bufferSize = configBUF_SIZE_DEFAULT );
-#if defined( configTYPE_HSERIAL )
-    int begin( HSerial_t * serial, int bufferSize = configBUF_SIZE_DEFAULT );
+    int begin( SPF_Serial_t * serial, int bufferSize = configBUF_SIZE_DEFAULT );
+#if defined( configSPF_TYPE_SERIAL_HW )
+    int begin( SPF_HWSerial_t * serial, int bufferSize = configBUF_SIZE_DEFAULT );
 #endif
-#if defined( configTYPE_SSERIAL )
-    int begin( SSerial_t * serial, int bufferSize = configBUF_SIZE_DEFAULT );
+#if defined( configSPF_TYPE_SERIAL_SW )
+    int begin( SPF_SWSerial_t * serial, int bufferSize = configBUF_SIZE_DEFAULT );
 #endif
     void end( void );
     int printf( const char * fmt, ... );
@@ -75,12 +75,12 @@ private:
 
     char * pcBuffer;
     size_t xBufferSize;
-    MSerial_t * pxMSerial;
-#if defined( configTYPE_HSERIAL )
-    HSerial_t * pxHSerial;
+    SPF_Serial_t * pxSerial;
+#if defined( configSPF_TYPE_SERIAL_HW )
+    SPF_HWSerial_t * pxHWSerial;
 #endif
-#if defined( configTYPE_SSERIAL )
-    SSerial_t * pxSSerial;
+#if defined( configSPF_TYPE_SERIAL_SW )
+    SPF_SWSerial_t * pxSWSerial;
 #endif
     bool bInitLock;
     void * (*pvMalloc)( size_t xSize );

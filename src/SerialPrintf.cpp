@@ -24,7 +24,7 @@
 #include "SerialPrintf.h"
 
 #include <Arduino.h>
-#if defined( configTYPE_SSERIAL )
+#if defined( configSPF_TYPE_SERIAL_SW )
     #include <SoftwareSerial.h>
 #endif
 
@@ -35,12 +35,12 @@ SerialPrintf::SerialPrintf()
     pcBuffer = NULL;
     xBufferSize = 0;
 
-    pxMSerial = NULL;
-#if defined( configTYPE_HSERIAL )
-    pxHSerial = NULL;
+    pxSerial = NULL;
+#if defined( configSPF_TYPE_SERIAL_HW )
+    pxHWSerial = NULL;
 #endif
-#if defined( configTYPE_SSERIAL )
-    pxSSerial = NULL;
+#if defined( configSPF_TYPE_SERIAL_SW )
+    pxSWSerial = NULL;
 #endif
 
     bInitLock = false;
@@ -56,13 +56,13 @@ SerialPrintf::~SerialPrintf()
 }
 /*-----------------------------------------------------------*/
 
-int SerialPrintf::begin( MSerial_t * serial, int bufferSize )
+int SerialPrintf::begin( SPF_Serial_t * serial, int bufferSize )
 {
     if( ( serial != NULL ) && ( bufferSize > 0 ) && ( bInitLock == false ) )
     {
         if( cSetBuffer( bufferSize ) == 0 )
         {
-            pxMSerial = serial;
+            pxSerial = serial;
             bInitLock = true;
 
             return 0;
@@ -73,15 +73,15 @@ int SerialPrintf::begin( MSerial_t * serial, int bufferSize )
 }
 /*-----------------------------------------------------------*/
 
-#if defined( configTYPE_HSERIAL )
+#if defined( configSPF_TYPE_SERIAL_HW )
 
-    int SerialPrintf::begin( HSerial_t * serial, int bufferSize )
+    int SerialPrintf::begin( SPF_HWSerial_t * serial, int bufferSize )
     {
         if( ( serial != NULL ) && ( bufferSize > 0 ) && ( bInitLock == false ) )
         {
             if( cSetBuffer( bufferSize ) == 0 )
             {
-                pxHSerial = serial;
+                pxHWSerial = serial;
                 bInitLock = true;
 
                 return 0;
@@ -94,15 +94,15 @@ int SerialPrintf::begin( MSerial_t * serial, int bufferSize )
 #endif
 /*-----------------------------------------------------------*/
 
-#if defined( configTYPE_SSERIAL )
+#if defined( configSPF_TYPE_SERIAL_SW )
 
-    int SerialPrintf::begin( SSerial_t * serial, int bufferSize )
+    int SerialPrintf::begin( SPF_SWSerial_t * serial, int bufferSize )
     {
         if( ( serial != NULL ) && ( bufferSize > 0 ) && ( bInitLock == false ) )
         {
             if( cSetBuffer( bufferSize ) == 0 )
             {
-                pxSSerial = serial;
+                pxSWSerial = serial;
                 bInitLock = true;
 
                 return 0;
@@ -117,12 +117,12 @@ int SerialPrintf::begin( MSerial_t * serial, int bufferSize )
 
 void SerialPrintf::end( void )
 {
-    pxMSerial = NULL;
-#if defined( configTYPE_HSERIAL )
-    pxHSerial = NULL;
+    pxSerial = NULL;
+#if defined( configSPF_TYPE_SERIAL_HW )
+    pxHWSerial = NULL;
 #endif
-#if defined( configTYPE_SSERIAL )
-    pxSSerial = NULL;
+#if defined( configSPF_TYPE_SERIAL_SW )
+    pxSWSerial = NULL;
 #endif
 
     vFree( pcBuffer );
@@ -162,23 +162,23 @@ int SerialPrintf::printf( const char * fmt, ... )
         sStringLen = vsnprintf( pcBuffer, xBufferSize, fmt, xArgs );
         if( ( sStringLen > 0 ) && ( sStringLen < ( int ) xBufferSize ) )
         {
-            if( pxMSerial != NULL )
+            if( pxSerial != NULL )
             {
-                pxMSerial->print( pcBuffer );
-                pxMSerial->flush();
+                pxSerial->print( pcBuffer );
+                pxSerial->flush();
             }
-#if defined( configTYPE_HSERIAL )
-            else if( pxHSerial != NULL )
+#if defined( configSPF_TYPE_SERIAL_HW )
+            else if( pxHWSerial != NULL )
             {
-                pxHSerial->print( pcBuffer );
-                pxHSerial->flush();
+                pxHWSerial->print( pcBuffer );
+                pxHWSerial->flush();
             }
 #endif
-#if defined( configTYPE_SSERIAL )
-            else if( pxSSerial != NULL )
+#if defined( configSPF_TYPE_SERIAL_SW )
+            else if( pxSWSerial != NULL )
             {
-                pxSSerial->print( pcBuffer );
-                pxSSerial->flush();
+                pxSWSerial->print( pcBuffer );
+                pxSWSerial->flush();
             }
 #endif
             else

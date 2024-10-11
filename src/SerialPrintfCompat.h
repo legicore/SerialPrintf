@@ -36,38 +36,38 @@
         defined( ARDUINO_AVR_MEGA2560 ) || \
         defined( ARDUINO_AVR_PRO )
 
-        #define configTYPE_MSERIAL  HardwareSerial
-        #define configTYPE_SSERIAL  SoftwareSerial
+        #define configSPF_TYPE_SERIAL       HardwareSerial
+        #define configSPF_TYPE_SERIAL_SW    SoftwareSerial
 
     #elif defined( ARDUINO_AVR_LEONARDO )
 
-        #define configTYPE_MSERIAL  Serial_
-        #define configTYPE_HSERIAL  HardwareSerial
-        #define configTYPE_SSERIAL  SoftwareSerial
+        #define configSPF_TYPE_SERIAL       Serial_
+        #define configSPF_TYPE_SERIAL_HW    HardwareSerial
+        #define configSPF_TYPE_SERIAL_SW    SoftwareSerial
 
     #elif defined( ARDUINO_AVR_NANO_EVERY ) || \
           defined( ARDUINO_AVR_UNO_WIFI_REV2 )
 
-        #define configTYPE_MSERIAL  UartClass
-        #define configTYPE_SSERIAL  SoftwareSerial
+        #define configSPF_TYPE_SERIAL       UartClass
+        #define configSPF_TYPE_SERIAL_SW    SoftwareSerial
 
     #elif defined( ARDUINO_SAMD_MKRZERO ) || \
           defined( ARDUINO_SAMD_NANO_33_IOT )
 
-        #define configTYPE_MSERIAL  Serial_
-        #define configTYPE_HSERIAL  Uart
+        #define configSPF_TYPE_SERIAL       Serial_
+        #define configSPF_TYPE_SERIAL_HW    Uart
 
     #elif defined( ARDUINO_MINIMA ) || \
           defined( ARDUINO_UNOWIFIR4 )
 
-        #define configTYPE_MSERIAL  _SerialUSB
-        #define configTYPE_HSERIAL  UART
-        #define configTYPE_SSERIAL  SoftwareSerial
+        #define configSPF_TYPE_SERIAL       _SerialUSB
+        #define configSPF_TYPE_SERIAL_HW    UART
+        #define configSPF_TYPE_SERIAL_SW    SoftwareSerial
 
     #elif defined( ARDUINO_ARCH_ESP32 )
 
-        #define configTYPE_MSERIAL  USBCDC
-        #define configTYPE_HSERIAL  HardwareSerial
+        #define configSPF_TYPE_SERIAL       USBCDC
+        #define configSPF_TYPE_SERIAL_HW    HardwareSerial
 
     #else
 
@@ -84,9 +84,9 @@
 /* If none of the needed defines is set, we try to use some assumed default
 values for the Arduino serial port. */
 
-#if !defined( configTYPE_MSERIAL )
+#if !defined( configSPF_TYPE_SERIAL )
 
-    #define configTYPE_MSERIAL HardwareSerial
+    #define configSPF_TYPE_SERIAL HardwareSerial
 
 #endif
 

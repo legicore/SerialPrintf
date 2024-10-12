@@ -26,13 +26,9 @@
 #include "SerialPrintfCompat.h"
 
 #include <Arduino.h>
-#if defined( configSPF_TYPE_SERIAL_SW )
+#if defined( configSPF_SERIAL_SW )
     #include <SoftwareSerial.h>
 #endif
-
-/*--------------------------------------------------*/
-
-#define configBUF_SIZE_DEFAULT 64
 
 /*--------------------------------------------------*/
 
@@ -45,12 +41,16 @@
 
 /*--------------------------------------------------*/
 
-typedef configSPF_TYPE_SERIAL SPF_Serial_t;
-#if defined( configSPF_TYPE_SERIAL_HW )
-    typedef configSPF_TYPE_SERIAL_HW SPF_HWSerial_t;
+#define configBUF_SIZE_DEFAULT 64
+
+/*--------------------------------------------------*/
+
+typedef configSPF_SERIAL SPF_Serial_t;
+#if defined( configSPF_SERIAL_HW )
+    typedef configSPF_SERIAL_HW SPF_HWSerial_t;
 #endif
-#if defined( configSPF_TYPE_SERIAL_SW )
-    typedef configSPF_TYPE_SERIAL_SW SPF_SWSerial_t;
+#if defined( configSPF_SERIAL_SW )
+    typedef configSPF_SERIAL_SW SPF_SWSerial_t;
 #endif
 /*--------------------------------------------------*/
 
@@ -61,10 +61,10 @@ public:
     SerialPrintf();
     ~SerialPrintf();
     int begin( SPF_Serial_t * serial, int bufferSize = configBUF_SIZE_DEFAULT );
-#if defined( configSPF_TYPE_SERIAL_HW )
+#if defined( configSPF_SERIAL_HW )
     int begin( SPF_HWSerial_t * serial, int bufferSize = configBUF_SIZE_DEFAULT );
 #endif
-#if defined( configSPF_TYPE_SERIAL_SW )
+#if defined( configSPF_SERIAL_SW )
     int begin( SPF_SWSerial_t * serial, int bufferSize = configBUF_SIZE_DEFAULT );
 #endif
     void end( void );
@@ -76,10 +76,10 @@ private:
     char * pcBuffer;
     size_t xBufferSize;
     SPF_Serial_t * pxSerial;
-#if defined( configSPF_TYPE_SERIAL_HW )
+#if defined( configSPF_SERIAL_HW )
     SPF_HWSerial_t * pxHWSerial;
 #endif
-#if defined( configSPF_TYPE_SERIAL_SW )
+#if defined( configSPF_SERIAL_SW )
     SPF_SWSerial_t * pxSWSerial;
 #endif
     bool bInitLock;

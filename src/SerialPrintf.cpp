@@ -24,7 +24,7 @@
 #include "SerialPrintf.h"
 
 #include <Arduino.h>
-#if defined( configSPF_TYPE_SERIAL_SW )
+#if defined( configSPF_SERIAL_SW )
     #include <SoftwareSerial.h>
 #endif
 
@@ -36,10 +36,10 @@ SerialPrintf::SerialPrintf()
     xBufferSize = 0;
 
     pxSerial = NULL;
-#if defined( configSPF_TYPE_SERIAL_HW )
+#if defined( configSPF_SERIAL_HW )
     pxHWSerial = NULL;
 #endif
-#if defined( configSPF_TYPE_SERIAL_SW )
+#if defined( configSPF_SERIAL_SW )
     pxSWSerial = NULL;
 #endif
 
@@ -73,7 +73,7 @@ int SerialPrintf::begin( SPF_Serial_t * serial, int bufferSize )
 }
 /*-----------------------------------------------------------*/
 
-#if defined( configSPF_TYPE_SERIAL_HW )
+#if defined( configSPF_SERIAL_HW )
 
     int SerialPrintf::begin( SPF_HWSerial_t * serial, int bufferSize )
     {
@@ -94,7 +94,7 @@ int SerialPrintf::begin( SPF_Serial_t * serial, int bufferSize )
 #endif
 /*-----------------------------------------------------------*/
 
-#if defined( configSPF_TYPE_SERIAL_SW )
+#if defined( configSPF_SERIAL_SW )
 
     int SerialPrintf::begin( SPF_SWSerial_t * serial, int bufferSize )
     {
@@ -118,10 +118,10 @@ int SerialPrintf::begin( SPF_Serial_t * serial, int bufferSize )
 void SerialPrintf::end( void )
 {
     pxSerial = NULL;
-#if defined( configSPF_TYPE_SERIAL_HW )
+#if defined( configSPF_SERIAL_HW )
     pxHWSerial = NULL;
 #endif
-#if defined( configSPF_TYPE_SERIAL_SW )
+#if defined( configSPF_SERIAL_SW )
     pxSWSerial = NULL;
 #endif
 
@@ -167,14 +167,14 @@ int SerialPrintf::printf( const char * fmt, ... )
                 pxSerial->print( pcBuffer );
                 pxSerial->flush();
             }
-#if defined( configSPF_TYPE_SERIAL_HW )
+#if defined( configSPF_SERIAL_HW )
             else if( pxHWSerial != NULL )
             {
                 pxHWSerial->print( pcBuffer );
                 pxHWSerial->flush();
             }
 #endif
-#if defined( configSPF_TYPE_SERIAL_SW )
+#if defined( configSPF_SERIAL_SW )
             else if( pxSWSerial != NULL )
             {
                 pxSWSerial->print( pcBuffer );
